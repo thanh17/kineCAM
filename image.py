@@ -155,15 +155,11 @@ class OurImageClass():
                 original=self.get_pixel_values(x,y)
                 c=[int(factor*(x-128)+128) for x in original]
                 self.set_pixel_values(x,y,c)
-# Functions for milestone 2
-    
 
-
-# Functions for tests milestone 1
 
 def set_pixels_test():
     '''crates a black 10x10 image and sets diagonal pixels to red, green and blue'''
-    img = OurImageClass(10,10,3, "RGB")
+    img = OurImageClass(10,10,3, mode = "RGB")
     img.set_pixel_value(0,0,0,255)
     img.set_pixel_value(1,1,1,255)
     img.set_pixel_value(2,2,2,255)
@@ -174,41 +170,26 @@ def set_pixels_test():
     img.set_pixel_value(7,7,1, 255)
     img.set_pixel_value(8,8,2, 255)
     img.set_pixel_value(9,9,0,255)
-    img.save_PNG('./Output/set_pixels_example.png')
-    img.save_BMP('./Output/set_pixels_example.bmp')
+    img.save_PNG('./Output/image_manipulation/set_pixels_example.png')
 
 def brightness_test():
     filename = './Input/monkey.jpg'
     brightImageTest=OurImageClass()
     brightImageTest.initialize_image(filename)
     brightImageTest.brighten_image(0.3)
-    brightImageTest.create_PIL().save("./Output/monkey_brightness.jpg")
+    brightImageTest.create_PIL().save("./Output/image_manipulation/monkey_brightness.jpg")
+
 def contrast_test():
     filename = './Input/monkey.jpg'
     contrastImageTest=OurImageClass()
     contrastImageTest.initialize_image(filename)
     contrastImageTest.contrast_image(0.5)
-    contrastImageTest.create_PIL().save("./Output/monkey_contrast.jpg")
+    contrastImageTest.create_PIL().save("./Output/image_manipulation/monkey_contrast.jpg")
 
 
 
-def read_all_pixels():
-    img = OurImageClass()
-    img.create_from_filename("./Input/monkey.jpg")
-    print(img.data)
-    out = img.create_PIL()
-    print(out.mode)
-    out.save('./Output/set_pixels_example.jpg')
 
-def read_top_left_pixel():
-    img = OurImageClass()
-    img.create_from_filename("./Input/monkey.jpg")
-    print("red: ", img.get_pixel_value(0,0,0))
-    print("green: ", img.get_pixel_value(0,0,1))
-    print("blue: ", img.get_pixel_value(0,0,2))
 
-#set_pixels_test()
-#read_all_pixels()
-#read_top_left_pixel()
-#brightness_test()
-#contrast_test()
+# set_pixels_test()
+# brightness_test()
+# contrast_test()

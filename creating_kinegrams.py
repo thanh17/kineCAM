@@ -14,25 +14,13 @@ def grayscale(im):
             output.set_pixel_value(i,j,0,np.uint8(1/3*(r+g+b)))
     return output
 
-def quantize_to_BW(im):
-    output = OurImageClass(im.width, im.height, channels = 1, mode = '1')
-    for i in range (im.width):
-        for j in range (im.height):
-            r = im.get_pixel_value(i,j,0)
-            g = im.get_pixel_value(i,j,1)
-            b = im.get_pixel_value(i,j,2)
-            val = 1/3*(r+g+b)
-            val = val/255
-            val = round(val)
-            val = val*255
-            output.set_pixel_value(i,j,0,val)
-    return output
 
 def quantize_val(val):
     if val >= 128: return 255
     else: return 0
 
 def ditherRGB_to_BW(im):
+    '''Converts an image in RGB to its dithered version in BW'''
     gr = grayscale(im)
     for j in range(im.height):
         for i in range(im.width):
@@ -52,20 +40,24 @@ def ditherRGB_to_BW(im):
             gr.set_pixel_value(i+1, j+1, 0, bottom_right +error*1/16)
     return gr
 
-def dithered_from_frames(folder):
+def ims_from_frames(folder, dithered = False, frame_num = 3):
+    '''Returns an image list of images in the folder, dithered if dithered=True and a maximum number frame_num images.'''
     to_kinegram = []
     files = os.listdir(folder)
     for file in files:
         filename = folder+'/'+file
         im=OurImageClass()
         im.initialize_image(filename)
-        im1 = ditherRGB_to_BW(im)
-        to_kinegram.append(im1)
-        if len(to_kinegram) == 12: break
+        if dithered:
+            im1 = ditherRGB_to_BW(im)
+            to_kinegram.append(im1)
+        else: to_kinegram.append(im)
+        if len(to_kinegram) == frame_num: break
     return to_kinegram
 
 
 def detect_difference(img_list):
+    '''Returns an grayscale image mapping the difference between the three images in the input image list'''
     im1 = img_list[0]
     im2 = img_list[1]
     im3 = img_list[2]
@@ -81,13 +73,15 @@ def detect_difference(img_list):
             diff_im.set_pixel_value(i,j,0, int(diff))
     return diff_im
 
-def generate_kinegram(img_list, hole_width=3, difference_detection=False, threshold=30):
+
+def generate_kinegram(img_list, hole_width=3, difference_detection=False, threshold=30, dithered = False):
     if difference_detection == True:
         diff_im = detect_difference(img_list)
         mid_im = img_list[1]
     width = img_list[0].width
     height = img_list[0].height
     output = OurImageClass(width, height, img_list[0].channels, mode="RGB")
+    if dithered: output.mode = "L"
     for x in range(width):
         img_num = x // hole_width % len(img_list)
         current_image = img_list[img_num]
@@ -106,37 +100,42 @@ def generate_kinegram(img_list, hole_width=3, difference_detection=False, thresh
     return output
 
 
-def generate_kinegram_np_array(img_list, hole_width=5):
-    width= img_list[0].shape[1]
-    height=img_list[0].shape[2]
-    new=np.array([])
-    for x in range(width):
-        img_num= x//hole_width%len(img_list)
-        current_image=img_list[img_num]
-        new.append(current_image[:,x,:])
-    output = OurImageClass.create_from_nparray(new)
-    return output
     
 
 
-# filename = './Input/monkey.jpg'
-# im=OurImageClass()
-# im.initialize_image(filename)
-# im1 = ditherRGB_to_BW(im)
-# # im2 = quantize_image(im, 0)
-# # im3 = optimize_quantize_to_BW(im)
+def test_dithering():
+    filename = './Input/monkey.jpg'
+    im=OurImageClass()
+    im.initialize_image(filename)
+    im1 = ditherRGB_to_BW(im)
+    filename = './Output/dithered_images/dithered_monkey.jpg'
+    im1.save_PNG(filename)
 
-# filename = './Output/monkey_dithered.jpg'
-# im1.save_PNG(filename)
-# filename = './Output/monkey_quantize4.jpg'
-# im2.save_PNG(filename)
-# filename = './Output/monkey_BW.jpg'
-# im3.save_PNG(filename)
+def test_dithered_kinegram():
+    folder = './Input/cata3'
+    dithered_frames = ims_from_frames(folder, True)
+    out = generate_kinegram(dithered_frames, 3, dithered=True)
+    filename = './Output/kinegrams/cata3_kinegram_dithered.jpg'
+    out.save_PNG(filename)
 
-#folder = './Input/roland5'
-#dithered_frames = dithered_from_frames(folder)
-#out = generate_kinegram(dithered_frames, 3)
-#filename = './Output/roland3_12_kinegram.jpg'
-#out.save_PNG(filename)
+def test_undithered_kinegram():
+    folder = './Input/cata3'
+    frames = ims_from_frames(folder)
+    out = generate_kinegram(frames, 3)
+    filename = './Output/kinegrams/cata3_kinegram_undithered.jpg'
+    out.save_PNG(filename)
+
+def test_difference_kinegram():
+    folder = './Input/cata3'
+    frames = ims_from_frames(folder)
+    out = generate_kinegram(frames, 3, difference_detection= True)
+    filename = './Output/kinegrams/cata3_difference.jpg'
+    out.save_PNG(filename)
+
+
+# test_dithering()
+# test_dithered_kinegram()
+# test_undithered_kinegram()
+# test_difference_kinegram()
 
 
