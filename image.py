@@ -4,7 +4,6 @@ import os
 import numpy as np
 
 class OurImageClass():
-# Functions for milestone 1
     def __init__(self, width = 0, height = 0, channels = 0, data=[], mode = "RGB"):
         '''Initiates a image of given height, width and black pixels of a specific number of channels'''
         self.width = width
@@ -18,6 +17,7 @@ class OurImageClass():
         self.mode = mode
 
     def initialize_image(self,filename):
+        '''Initialize image from filename'''
         image=Image.open(filename)
         data=[[x for x in y] for y in list(image.getdata())]
         self.channels=len(data[0])
@@ -37,17 +37,20 @@ class OurImageClass():
         return index
 
     def get_pixel_value(self, x, y, z):
+        '''Gets value of pixel for a specific channel'''
         # assert (x < 0 or x >= self.width or y < 0 or y >= self.height or z < 0 or z >= self.channels) == False, "Accesing pixel out of range"
         index = self.get_pixel_index(x,y)
         return self.data[index][z]
 
 
     def get_pixel_values(self, x, y):
+        '''Gets pixel values for all channels of a specific pixel'''
         # assert (x < 0 or x >= self.width or y < 0 or y >= self.height) == False, "Accesing pixel out of range"
         index = self.get_pixel_index(x,y)
         return self.data[index]
 
     def set_pixel_value(self, x, y, z, c):
+        '''Sets the value of one channel of a pixel'''
         if c < 0: c = 0
         if c > 255: c = 255
         if (x < 0 or x >= self.width or y < 0 or y >= self.height or z < 0 or z >= self.channels) == False:
@@ -56,6 +59,7 @@ class OurImageClass():
         
 
     def set_pixel_values(self, x, y, data):
+        '''Sets the value of all channels of a pixel'''
         assert (x < 0 or x >= self.width or y < 0 or y >= self.height) == False, "Accesing pixel out of range"
         index = self.get_pixel_index(x,y)
         self.data[index]=data
@@ -72,6 +76,7 @@ class OurImageClass():
             self.channels = 0
             
     def create_from_PIL(self, img):
+        '''creates an image of our class from a PIL format'''
         img = img.convert('RGB')  # in case we were given a greyscale image
         img_data = img.getdata()
         self.data = []
@@ -92,6 +97,7 @@ class OurImageClass():
 
     @staticmethod
     def create_from_nparray(arr):
+        '''creates an image of our format given an nparray'''
         data = []
         for y in range(arr.shape[0]):
             for x in range(arr.shape[1]):
@@ -102,6 +108,7 @@ class OurImageClass():
         return OurImageClass(width,height,channels,data)
 
     def create_from_filename(self, filename):
+        '''creates image from a given file'''
         with open(filename, 'rb') as img_handle:
             img = Image.open(img_handle)
             self.create_from_PIL(img)
@@ -113,6 +120,7 @@ class OurImageClass():
             return OurImageClass.create_from_PIL(img)
 
     def create_PIL(self):
+        '''Generates an image of type PIL from our image class'''
         '''Makes and returns a PIL image of a given mode from our image data'''
         out = Image.new(mode= self.mode, size=(self.width, self.height))
         # Change RGB to L if image needs to be saved in greyscale
@@ -124,12 +132,14 @@ class OurImageClass():
         return out
     
     def save_PNG(self, filename):
+        '''Saves a PNG image as filename from our image class'''
         pil_img = self.create_PIL()
         # if self.mode == "L" or self.mode == "BW": pil_img.convert("L")
         # if self.mode == "BW": pil_img.convert("1")
         pil_img.save(filename, "PNG")
     
     def save_BMP(self, filename):
+        '''saves image as BMP from filename'''
         pil_img = self.create_PIL()
         pil_img.save(filename, "BMP")
 
@@ -172,6 +182,7 @@ def set_pixels_test():
     img.save_PNG('./Output/image_manipulation/set_pixels_example.png')
 
 def brightness_test():
+    '''Tests the brightness function of our class'''
     filename = './Input/monkey.jpg'
     brightImageTest=OurImageClass()
     brightImageTest.initialize_image(filename)
@@ -179,6 +190,7 @@ def brightness_test():
     brightImageTest.create_PIL().save("./Output/image_manipulation/monkey_brightness.jpg")
 
 def contrast_test():
+    '''Tests the contrast function of our class'''
     filename = './Input/monkey.jpg'
     contrastImageTest=OurImageClass()
     contrastImageTest.initialize_image(filename)

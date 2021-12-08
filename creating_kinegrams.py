@@ -75,6 +75,9 @@ def detect_difference(img_list):
 
 
 def generate_kinegram(img_list, hole_width=3, difference_detection=False, threshold=30, dithered = False):
+    '''Given a list of images of OurImageClass, it creates a kinegram which is slit has a hole_width pixel width. If
+    difference_detection is True, it takes into account a difference map to determine wether a part of the image should be
+    static or moving using a threshold difference. If dithered = True it produces a grayscale kinegram, otherwise a RGB kinegram.'''
     if difference_detection == True:
         diff_im = detect_difference(img_list)
         mid_im = img_list[1]
@@ -96,7 +99,6 @@ def generate_kinegram(img_list, hole_width=3, difference_detection=False, thresh
                     output.set_pixel_values(x, y, pix_val)
                 else:
                     output.set_pixel_values(x, y, image_pixel)
-            # print(output.get_pixel_values(x,y))
     return output
 
 
@@ -104,6 +106,7 @@ def generate_kinegram(img_list, hole_width=3, difference_detection=False, thresh
 
 
 def test_dithering():
+    '''Tests ditherRGBtoBW'''
     filename = './Input/monkey.jpg'
     im=OurImageClass()
     im.initialize_image(filename)
@@ -112,6 +115,7 @@ def test_dithering():
     im1.save_PNG(filename)
 
 def test_dithered_kinegram():
+    '''Test generate_kinegram using dithered frames'''
     folder = './Input/cata3'
     dithered_frames = ims_from_frames(folder, True)
     out = generate_kinegram(dithered_frames, 3, dithered=True)
@@ -119,17 +123,19 @@ def test_dithered_kinegram():
     out.save_PNG(filename)
 
 def test_undithered_kinegram():
-    folder = './Input/cata3'
+    '''Testts generate_kinegram not using dithered frames'''
+    folder = './Input/laura6'
     frames = ims_from_frames(folder)
     out = generate_kinegram(frames, 3)
-    filename = './Output/kinegrams/cata3_kinegram_undithered.jpg'
+    filename = './Output/kinegrams/laura_kinegram_undithered.jpg'
     out.save_PNG(filename)
 
 def test_difference_kinegram():
-    folder = './Input/cata3'
+    '''Tests generate_kinegram using difference detection for static parts of the kinegram'''
+    folder = './Input/laura6'
     frames = ims_from_frames(folder)
     out = generate_kinegram(frames, 3, difference_detection= True)
-    filename = './Output/kinegrams/cata3_difference.jpg'
+    filename = './Output/kinegrams/laura3_difference.jpg'
     out.save_PNG(filename)
 
 
