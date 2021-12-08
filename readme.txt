@@ -52,3 +52,12 @@ to run the code locally and see test results. We used some of these for our test
 
 The code is currently automated to run upon startup of the raspberry pi (plugging into the power bank). To turn off automation, ssh into the pi and run the 
 command line "sudo crontab -e," and comment out the last line of this file. Then run "sudo reboot.
+
+
+To test the kinegrams online, we have included the Testing_Kinegrams folder with Testing_Kinegrams.pde Processing file. Running the file in Processing 5 
+will allow the user to see if the kinegram works. The input image needs to be added to the data folder and the filename changed in line 8. The size of the
+image should also be changed correspondly in line 7 and the hole_w to whatever parameter was used for hole_width when calling the generate_kinegram
+function, and the slit_w to (frame_num - 1)*hole_w. Where frame_num is the number of frames used in the kinegram.
+
+
+Enjoy using kineCAM!
