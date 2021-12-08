@@ -4,8 +4,8 @@ int hole_w;
 PImage photo;
 
 void setup(){
-  size(640, 320);
-  photo = loadImage("difference_detection/OldKinegram1.jpg");
+  size(320, 240);
+  photo = loadImage("cata3_difference.jpg");
   background(255);
   slit_w = 6;
   hole_w = 3;
