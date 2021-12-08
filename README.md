@@ -2,6 +2,8 @@
 
 Welcome to **kineCAM**!
 
+Markdown embedding: ![Kinecam video](https://www.youtube.com/watch?v=6bRIexfb4wg)
+
 This code works with a Raspberry Pi to take photos of a camera, produce kinegrams out of photos taken 1 second apart from eachother, and print the resulting kinegram in a receipt printer.
 
 
