@@ -37,5 +37,17 @@ The Input folder, provides the user photo files to test different functionalitie
 to run the code locally and see test results. We used some of these for our test functions in both files, and users are encouraged to change them.
 
 
- video.py file 
+ video.py file handles taking images of the frames that will be used in our kinegram and sending the print command to the receipt printer. The file
+ has a Video class with a capture_kinegram function that takes num_frames = 3 images in an interval of 1 second using picamera. It stores these
+ images in an nparray and uses our OurImageClass to make turn this nparrays into images of our class. It then uses our generate_kinegram function to
+ create a kinegram of the frames. It is preset to not use dithering and to not account for pixel difference in the different frames. It then sends
+ a command to our receipt printer to print the kinegram image.
 
+
+ gpio_button.py this function is what is called upon starting the Raspberry Pi. It controls the button that allows our capture_kinegram function in
+ video.py to run. It is an infinite loop that looks for a press in our button. Once it is pressed it calls the capture_kinegram function and allows
+ for all of that process to run and so print a kinegram from our live images.
+
+
+The code is currently automated to run upon startup of the raspberry pi (plugging into the power bank). To turn off automation, ssh into the pi and run the 
+command line "sudo crontab -e," and comment out the last line of this file. Then run "sudo reboot.
