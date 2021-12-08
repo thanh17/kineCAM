@@ -15,6 +15,7 @@ class Video():
         x_resolution=320
         y_resolution=240
         num_frames=3
+        dithered = False
         storage=[np.empty((y_resolution, x_resolution, 3), dtype=np.uint8)]*num_frames
         with picamera.PiCamera() as camera:
             camera.resolution = (x_resolution, y_resolution)
@@ -26,7 +27,12 @@ class Video():
                 camera.capture(storage[i],'rgb')
                 led.off()
                 new_storage.append(OurImageClass.create_from_nparray(storage[i]))
-
+        if dithered == True:
+            for i in range(len(new_storage)):
+                im = new_storage[i]
+                dithered_im = creating_kinegrams.ditherRGB_to_BW(im)
+                new_storage[i] = dithered_im
+                
         creating_kinegrams.generate_kinegram(new_storage,3,False).save_PNG('/home/pi/newKinegram/Output/live/camera_kinegram_capture.png')
         conn = cups.Connection()
         printer_name = "ZJ-58-3"

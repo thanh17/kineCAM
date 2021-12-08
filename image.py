@@ -21,7 +21,6 @@ class OurImageClass():
         image=Image.open(filename)
         data=[[x for x in y] for y in list(image.getdata())]
         self.channels=len(data[0])
-        print(image.size)
         self.mode=image.mode
         self.width=image.size[0]
         self.height=image.size[1]
