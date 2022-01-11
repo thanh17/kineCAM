@@ -1,12 +1,13 @@
 #from video import Video
 from gpiozero import Button
-import video
+import new_video
 button = Button(26)
 import time
 
-# Will send a command to capture_kinegram if the button is pressed
-
 while True:
+        #time.sleep(10)
         button.wait_for_press()
         print('You pushed me')
-        video.Video.capture_kinegram()
+        new_video.Video.capture_kinegram()
+        #Video.capture_kinegram()
+        #print('You pushed me')

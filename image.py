@@ -114,7 +114,7 @@ class OurImageClass():
             self.create_from_PIL(img)
 
     @staticmethod
-    def create_from_filename(self, filename):
+    def create_from_filename(filename):
         with open(filename, 'rb') as img_handle:
             img = Image.open(img_handle)
             return OurImageClass.create_from_PIL(img)
