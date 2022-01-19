@@ -74,7 +74,7 @@ def detect_difference(img_list):
     return diff_im
 
 
-def generate_kinegram(img_list, hole_width=3, difference_detection=False, threshold=30, dithered = False):
+def generate_kinegram(img_list, hole_width=3, difference_detection=False, threshold=30):
     '''Given a list of images of OurImageClass, it creates a kinegram which is slit has a hole_width pixel width. If
     difference_detection is True, it takes into account a difference map to determine wether a part of the image should be
     static or moving using a threshold difference. If dithered = True it produces a grayscale kinegram, otherwise a RGB kinegram.'''
@@ -84,7 +84,6 @@ def generate_kinegram(img_list, hole_width=3, difference_detection=False, thresh
     width = img_list[0].width
     height = img_list[0].height
     output = OurImageClass(width, height, img_list[0].channels, mode="RGB")
-    if dithered: output.mode = "L"
     for x in range(width):
         img_num = x // hole_width % len(img_list)
         current_image = img_list[img_num]
