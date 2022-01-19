@@ -11,7 +11,7 @@ from take_vid import video_to_frames
 import creating_kinegrams
 class Video():
     @staticmethod
-    def capture_kinegram(num_frames, hole_width, difference_detection, threshold, dithered, num_seconds):
+    def capture_kinegram(num_frames, hole_width, difference_detection, threshold, num_seconds):
         led = LED(12)
         x_resolution=320
         y_resolution=240
@@ -25,10 +25,12 @@ class Video():
             video_to_frames(camera, num_seconds, num_frames)
             led.off()
 
-        for i in range(num_frames): 
-            new_storage.append(OurImageClass.create_from_filename("./Output/frame"+str(i)+".png"))
-        creating_kinegrams.generate_kinegram(new_storage,hole_width,difference_detection, threshold, dithered).save_PNG('/home/pi/newKinegram/Output/camera_kinegram_capture.png')
+        for i in range(num_frames):
+            new_storage.append(OurImageClass.create_from_filename("/home/pi/newKinegram/Output/frame"+str(i)+".png"))
+        creating_kinegrams.generate_kinegram(new_storage,hole_width,difference_detection, threshold).save_PNG('/home/pi/newKinegram/Output/camera_kinegram_capture.png')
         conn = cups.Connection()
         printer_name = "ZJ-58-3"
+        #prints white image before image to make sliding the overlay easier
+        conn.printFile(printer_name,'/home/pi/newKinegram/white.jpg', "Buffer", {})
         conn.printFile(printer_name,'/home/pi/newKinegram/Output/camera_kinegram_capture.png', "Hello", {})
 

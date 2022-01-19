@@ -14,7 +14,6 @@ num_seconds = 1 #must be int > 0
 
 
 
-
 while True:
         #time.sleep(10)
         button.wait_for_press()
