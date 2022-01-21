@@ -47,5 +47,7 @@ The code is currently automated to run upon startup of the raspberry pi (pluggin
 
 To test the kinegrams online, we have included the **Testing_Kinegrams folder** with Testing_Kinegrams.pde Processing file. Running the file in Processing 5 will allow the user to see if the kinegram works. The input image needs to be added to the data folder and the filename changed in line 8. The size of the image should also be changed correspondly in line 7 and the hole_w to whatever parameter was used for hole_width when calling the generate_kinegram function, and the slit_w to (frame_num - 1)*hole_w. Where frame_num is the number of frames used in the kinegram.
 
+To print an overlay we included the **Overlay**folder. Right now there is a default overlay image called bigoverlay.png that works for the hardware we used and the parameters of num_frames = 3 and hole_width = 3 when creating the kinegram. However in order to create a new one it is necessary to make some changes to the Overlay.pde file in the folder. To change the num_frames and hole_width there are some parameters at the beginning of the file that can be changed to achieve this. You can then press the shift key to save this new overlay to strips.png. You can then print this at 200dpi on a transparent sheet to generate your overlay. If this is not working it is possible that the scaling is wrong, which would need to be recalculated according to the hardware and updated in the scale variable in Overlay.pde.
+
 
 Enjoy using **kineCAM**!
