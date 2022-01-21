@@ -15,6 +15,8 @@ def get_allowed(num_seconds, num_frames):
 	return allowed
 
 
+
+
 def video_to_frames(camera, num_seconds, num_frames):
 	loc = '/home/pi/newKinegram/videos/video.h264'
 	camera.start_preview()
